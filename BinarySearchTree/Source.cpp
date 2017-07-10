@@ -3,16 +3,16 @@ using namespace std;
 
 struct Node
 {
-	int data;
-	Node* left;
-	Node* right;
-	Node(int dt = 0);
+	int data;					// Int-data of node
+	Node* left;					// Pointer to right child
+	Node* right;				// Pointer to left child
+	Node(int dt = 0);			// Sets data to 0 if not specified
 };
 
-Node* z = new Node();			// Istedenfor NULL
-Node* root = z;					// Rotnode
+Node* z = new Node();			// Instead of NULL
+Node* root = z;					// Root node points to z node at start
 
-void Insert(int data);			// Legger til node i tre
+void Insert(int data);			// Adds node to BST
 
 int main()
 {
@@ -24,33 +24,33 @@ int main()
 }
 
 // Node constructor
-Node::Node(int dt)			// Data settes til 0 om ikke param. er spesifisert
+Node::Node(int dt)
 {
 	data = dt;
-	left = z;				// Barna settes til z-node
+	left = z;				// Children points to z node
 	right = z;
 }
 
 void Insert(int data) {
-	if (root == z)				// Hvis tomt tre
+	if (root == z)				// If tree is empty
 		root = new Node(data);
 	else
 	{
-		Node* newNode = root;	// Starter på rotnode
-		while(newNode->left != z || newNode->right != z) // Så lenge noden har minst ett barn
+		Node* newNode = root;	// Starts on root
+		while(newNode->left != z || newNode->right != z) // As long as current node has a child
 		{
-			if (data > newNode->data)		// Ny node har større verdi
-				newNode = newNode->right;	// Gå til høyre
-			else							// Ny node har mindre verdi
-				newNode = newNode->left;	// Gå til venstre
+			if (data > newNode->data)		// New node has a greater value
+				newNode = newNode->right;	// Go right
+			else							// New node has a lesser value
+				newNode = newNode->left;	// Go left
 		}
-		// Funnet plass for ny node
-		if (newNode == z)							// Hvis aktuell node er z-node
+		// Found place for new node
+		if (newNode == z)							// If placement points to z node
 			newNode = new Node(data);
-		else if (data > newNode->data)
-			newNode->right = new Node(data);		// Opprett ny node som høyre barn
+		else if (data > newNode->data)				// If placement points to another node
+			newNode->right = new Node(data);		// Create new node as right child
 		else
-			newNode->left = new Node(data);			// Opprett ny node som venstre barn
+			newNode->left = new Node(data);			// Create new node as left child
 	}
 	cout << "New node " << data << " added to BST." << endl;
 }
