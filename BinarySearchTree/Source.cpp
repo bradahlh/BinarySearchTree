@@ -3,22 +3,29 @@ using namespace std;
 
 struct Node
 {
-	int data;					// Int-data of node
-	Node* left;					// Pointer to right child
-	Node* right;				// Pointer to left child
-	Node(int dt = 0);			// Sets data to 0 if not specified
+	int data;						// Int-data of node
+	Node* left;						// Pointer to right child
+	Node* right;					// Pointer to left child
+	Node(int dt = 0);				// Sets data to 0 if not specified
 };
 
-Node* z = new Node();			// Instead of NULL
-Node* root = z;					// Root node points to z node at start
+Node* z = new Node();				// Instead of NULL
+Node* root = z;						// Root node points to z node at start
 
-void Insert(int data);			// Adds node to BST
+Node* Insert(Node* newNode, int data);				// Adds node to BST
+void InorderTrav(Node* t);			// <Left><Data><Right>
+void PreorderTrav(Node* t);			// <Data><Left><Right>
+void PostorderTrav(Node* t);		// <Left><Right><Data>
 
 int main()
 {
-	Insert(15);
-	Insert(5);
-	Insert(3);
+	root = Insert(root, 4);
+	root = Insert(root, 2);
+	root = Insert(root, 1);
+	root = Insert(root, 3);
+	root = Insert(root, 7);
+	root = Insert(root, 6);
+	PostorderTrav(root);
 
 	return 0;
 }
@@ -31,26 +38,48 @@ Node::Node(int dt)
 	right = z;
 }
 
-void Insert(int data) {
-	if (root == z)				// If tree is empty
-		root = new Node(data);
-	else
+Node* Insert(Node* newNode, int data)
+{
+	// Tree/sub tree is not empty
+	if (newNode != z)
 	{
-		Node* newNode = root;	// Starts on root
-		while(newNode->left != z || newNode->right != z) // As long as current node has a child
-		{
-			if (data > newNode->data)		// New node has a greater value
-				newNode = newNode->right;	// Go right
-			else							// New node has a lesser value
-				newNode = newNode->left;	// Go left
-		}
-		// Found place for new node
-		if (newNode == z)							// If placement points to z node
-			newNode = new Node(data);
-		else if (data > newNode->data)				// If placement points to another node
-			newNode->right = new Node(data);		// Create new node as right child
-		else
-			newNode->left = new Node(data);			// Create new node as left child
+		if (data > newNode->data)	// Insertion node has greater value
+			newNode->right = Insert(newNode->right, data);
+		else						// Insertion node has lesser value
+			newNode->left = Insert(newNode->left, data);
+		return newNode;				// Returns the node (with new connection)
 	}
-	cout << "New node " << data << " added to BST." << endl;
+	// Tree/sub tree is empty
+	else
+		return new Node(data);		// Creates a new node and returns it
+}
+
+void InorderTrav(Node* t)
+{
+	if (t != z)								// Tree is not empty
+	{
+		InorderTrav(t->left);				// Go left
+		cout << t->data << endl;			// Print data
+		InorderTrav(t->right);				// Go right
+	}
+}
+
+void PreorderTrav(Node* t)
+{
+	if (t != z)								// Tree is not empty
+	{
+		cout << t->data << endl;			// Print data
+		PreorderTrav(t->left);				// Go left
+		PreorderTrav(t->right);				// Go right
+	}
+}
+
+void PostorderTrav(Node* t)
+{
+	if (t != z)								// Tree is not empty
+	{
+		PostorderTrav(t->left);				// Go left
+		PostorderTrav(t->right);			// Go right
+		cout << t->data << endl;			// Print data
+	}
 }
