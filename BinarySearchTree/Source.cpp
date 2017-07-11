@@ -12,10 +12,10 @@ struct Node
 Node* z = new Node();				// Instead of NULL
 Node* root = z;						// Root node points to z node at start
 
-Node* Insert(Node* newNode, int data);				// Adds node to BST
-void InorderTrav(Node* t);			// <Left><Data><Right>
-void PreorderTrav(Node* t);			// <Data><Left><Right>
-void PostorderTrav(Node* t);		// <Left><Right><Data>
+Node* Insert(Node* newNode, int data);	// Adds node to BST
+void InorderTrav(Node* t);				// <Left><Data><Right>
+void PreorderTrav(Node* t);				// <Data><Left><Right>
+void PostorderTrav(Node* t);			// <Left><Right><Data>
 
 int main()
 {
@@ -34,7 +34,7 @@ int main()
 Node::Node(int dt)
 {
 	data = dt;
-	left = z;				// Children points to z node
+	left = z;						// Children points to z node
 	right = z;
 }
 
@@ -56,30 +56,30 @@ Node* Insert(Node* newNode, int data)
 
 void InorderTrav(Node* t)
 {
-	if (t != z)								// Tree is not empty
+	if (t != z)						// Tree is not empty
 	{
-		InorderTrav(t->left);				// Go left
-		cout << t->data << endl;			// Print data
-		InorderTrav(t->right);				// Go right
+		InorderTrav(t->left);		// Go left
+		cout << t->data << endl;	// Print data
+		InorderTrav(t->right);		// Go right
 	}
 }
 
 void PreorderTrav(Node* t)
 {
-	if (t != z)								// Tree is not empty
+	if (t != z)						// Tree is not empty
 	{
-		cout << t->data << endl;			// Print data
-		PreorderTrav(t->left);				// Go left
-		PreorderTrav(t->right);				// Go right
+		cout << t->data << endl;	// Print data
+		PreorderTrav(t->left);		// Go left
+		PreorderTrav(t->right);		// Go right
 	}
 }
 
 void PostorderTrav(Node* t)
 {
-	if (t != z)								// Tree is not empty
+	if (t != z)						// Tree is not empty
 	{
-		PostorderTrav(t->left);				// Go left
-		PostorderTrav(t->right);			// Go right
-		cout << t->data << endl;			// Print data
+		PostorderTrav(t->left);		// Go left
+		PostorderTrav(t->right);	// Go right
+		cout << t->data << endl;	// Print data
 	}
 }
