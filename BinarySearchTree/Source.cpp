@@ -33,11 +33,15 @@ int main()
 	
 	PreorderTrav(root);
 	
-	root = Delete(root, 7);
-	cout << "\n\nDeleting node 7:" << endl;
+	cout << "\n\nDeleting node 3:" << endl;
+	root = Delete(root, 3);
+	PreorderTrav(root);
+	cout << "\n\nDeleting node 3:" << endl;
+	root = Delete(root, 3);
+
 	PreorderTrav(root);
 
-	cout << endl;
+	cout << endl << endl;
 	return 0;
 }
 
@@ -67,7 +71,16 @@ Node* Insert(Node* root, int data)
 
 Node* Delete(Node* root, int data)
 {
-	if (data == root->data)		// If node is found
+	if (root == z)
+	{
+		cout << "Node does not exist." << endl;
+		return root;
+	}
+	if (data > root->data)				// Node to be deleted is greater
+		root->right = Delete(root->right, data);
+	else if (data < root->data)			// Node to be deleted is lesser
+		root->left = Delete(root->left, data);
+	else if (data == root->data)		// If node is found
 	{
 		// Node has no children
 		if (root->left == z && root->right == z)
@@ -97,13 +110,8 @@ Node* Delete(Node* root, int data)
 			root->right = Delete(root->right, root->data);	// Delete RST smallest
 			return root;				// Return the root
 		}
-		
 	}
-	else if (data > root->data) // Node to be deleted is greater
-		root->right = Delete(root->right, data);
-	else						// Node to be deleted is lesser
-		root->left = Delete(root->left, data);
-	return root;				// Return root (with changed links)
+	return root;					// Return root (with changed links)
 }
 
 void InorderTrav(Node* t)
