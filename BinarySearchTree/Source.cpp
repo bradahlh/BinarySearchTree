@@ -12,21 +12,32 @@ struct Node
 Node* z = new Node();				// Instead of NULL
 Node* root = z;						// Root node points to z node at start
 
-Node* Insert(Node* newNode, int data);	// Adds node to BST
+Node* Insert(Node* root, int data);	// Adds node to BST
+Node* Delete(Node* root, int data);	// Removes node from BST
 void InorderTrav(Node* t);				// <Left><Data><Right>
 void PreorderTrav(Node* t);				// <Data><Left><Right>
 void PostorderTrav(Node* t);			// <Left><Right><Data>
 
 int main()
 {
-	root = Insert(root, 4);
-	root = Insert(root, 2);
 	root = Insert(root, 1);
-	root = Insert(root, 3);
+	root = Insert(root, 4);
 	root = Insert(root, 7);
-	root = Insert(root, 6);
-	PostorderTrav(root);
+	root = Insert(root, 3);
+	root = Insert(root, 10);
+	root = Insert(root, 8);
+	root = Insert(root, 13);
+	root = Insert(root, 5);
+	root = Insert(root, 11);
+	root = Insert(root, 12);
+	
+	PreorderTrav(root);
+	
+	root = Delete(root, 7);
+	cout << "\n\nDeleting node 7:" << endl;
+	PreorderTrav(root);
 
+	cout << endl;
 	return 0;
 }
 
@@ -38,20 +49,61 @@ Node::Node(int dt)
 	right = z;
 }
 
-Node* Insert(Node* newNode, int data)
+Node* Insert(Node* root, int data)
 {
 	// Tree/sub tree is not empty
-	if (newNode != z)
+	if (root != z)
 	{
-		if (data > newNode->data)	// Insertion node has greater value
-			newNode->right = Insert(newNode->right, data);
+		if (data > root->data)	// Insertion node has greater value
+			root->right = Insert(root->right, data);
 		else						// Insertion node has lesser value
-			newNode->left = Insert(newNode->left, data);
-		return newNode;				// Returns the node (with new connection)
+			root->left = Insert(root->left, data);
+		return root;				// Returns the node (with new connection)
 	}
 	// Tree/sub tree is empty
 	else
 		return new Node(data);		// Creates a new node and returns it
+}
+
+Node* Delete(Node* root, int data)
+{
+	if (data == root->data)		// If node is found
+	{
+		// Node has no children
+		if (root->left == z && root->right == z)
+		{
+			delete root;			// Delete node from memory
+			root = z;				// Let pointer to root point to z
+			return root;			// Return link to z
+		}
+		// Node has one child
+		else if (root->left == z || root->right == z)
+		{
+			Node* child;			// Stores child of node to be deleted
+			if (root->left == z)	// Right child only
+				child = root->right;
+			else					// Left child only
+				child = root->left;
+			delete root;			// Delete node
+			return child;			// Child node returned
+		}
+		// Node has two children
+		else
+		{
+			Node* small = root->right;	// Find smallest value in RST
+			while (small->left != z)	// As long as there are still left children
+				small = small->left;
+			root->data = small->data;	// Copy data from smallest node to root
+			root->right = Delete(root->right, root->data);	// Delete RST smallest
+			return root;				// Return the root
+		}
+		
+	}
+	else if (data > root->data) // Node to be deleted is greater
+		root->right = Delete(root->right, data);
+	else						// Node to be deleted is lesser
+		root->left = Delete(root->left, data);
+	return root;				// Return root (with changed links)
 }
 
 void InorderTrav(Node* t)
@@ -59,7 +111,7 @@ void InorderTrav(Node* t)
 	if (t != z)						// Tree is not empty
 	{
 		InorderTrav(t->left);		// Go left
-		cout << t->data << endl;	// Print data
+		cout << t->data << " ";		// Print data
 		InorderTrav(t->right);		// Go right
 	}
 }
@@ -68,7 +120,7 @@ void PreorderTrav(Node* t)
 {
 	if (t != z)						// Tree is not empty
 	{
-		cout << t->data << endl;	// Print data
+		cout << t->data << " ";		// Print data
 		PreorderTrav(t->left);		// Go left
 		PreorderTrav(t->right);		// Go right
 	}
@@ -80,6 +132,6 @@ void PostorderTrav(Node* t)
 	{
 		PostorderTrav(t->left);		// Go left
 		PostorderTrav(t->right);	// Go right
-		cout << t->data << endl;	// Print data
+		cout << t->data << " ";		// Print data
 	}
 }
